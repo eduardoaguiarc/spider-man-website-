@@ -1,0 +1,357 @@
+/* ==========================================================================
+   Spider-Man — Um Novo Dia
+   Layout do Figma: 1920 x 1080 por seção.
+
+   Toda medida é escrita em unidades de design (px do Figma) multiplicadas
+   por --u, que vale 1px quando a página tem 1920px de largura.
+
+   As seções ocupam 100% da altura da tela; por isso as posições verticais
+   são ancoradas (topo / base / centro) em vez de usarem um "top" fixo.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Good Times";
+  src: url("assets/good-times.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+img { display: block; max-width: 100%; }
+
+a { color: inherit; text-decoration: none; }
+
+p, h1, h2, h3, figure { margin: 0; }
+
+ul { margin: 0; padding: 0; list-style: none; }
+
+html { background-color: #000; }
+
+body {
+  container-type: inline-size;      /* referência para as unidades cqw */
+  overflow-x: hidden;
+  background-color: #000;
+  font-family: "Poppins", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 1 unidade de design, compartilhada pelas seções */
+.hero,
+.cast {
+  --u: calc(100cqw / 1920);
+}
+
+
+/* ==========================================================================
+   SEÇÃO 1 — HERO
+   ========================================================================== */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #770000;
+}
+
+/* Teia: imagem em tons de cinza em overlay 30% sobre o vermelho */
+.hero__webbing {
+  position: absolute;
+  inset: 0;
+  background: url("assets/bg.webp") center bottom / cover no-repeat;
+  opacity: .3;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* SVG que só carrega o <clipPath>: não ocupa espaço na página */
+.clip-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   STAGE — div recortada pelo shape de bordas arredondadas internas.
+   Ocupa 100% da largura e 100% da altura disponíveis (menos a margem de 32u).
+   Como o clipPath está em objectBoundingBox, o recorte acompanha os dois eixos.
+   -------------------------------------------------------------------------- */
+.stage {
+  position: absolute;
+  inset: calc(32 * var(--u));
+
+  background-color: #fff;
+  background-image: url("assets/bg-container.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 66.9%;
+
+  clip-path: url(#stage-clip);
+}
+
+/* ---------- Título + sinopse (centralizados na vertical) ---------- */
+.movie {
+  position: absolute;
+  left: calc(45 * var(--u));
+  width: calc(1766 * var(--u));
+  top: 50%;
+  margin-top: calc(-56 * var(--u));   /* 540 - 484, com o bloco de 153u */
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.movie__title {
+  width: calc(445 * var(--u));
+  height: calc(153 * var(--u));
+}
+
+.movie__desc {
+  width: calc(449 * var(--u));
+  margin-top: calc(16.5 * var(--u));
+  font-size: calc(20 * var(--u));
+  line-height: calc(30 * var(--u));
+  color: rgba(0, 0, 0, .9);
+}
+
+/* ---------- Selo "role a página" (ancorado na base à direita) ---------- */
+.scroll-badge {
+  position: absolute;
+  right: calc(45 * var(--u));
+  bottom: calc(55.64 * var(--u));
+  width: calc(176 * var(--u));
+  height: calc(176 * var(--u));
+}
+
+.scroll-badge__ring {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-badge__hand {
+  position: absolute;
+  left: calc(50 * var(--u));
+  top: calc(45.64 * var(--u));
+  width: calc(76 * var(--u));
+  height: calc(83 * var(--u));
+}
+
+/* --------------------------------------------------------------------------
+   Elementos nos recortes (fora do shape, sobre o vermelho)
+   -------------------------------------------------------------------------- */
+
+/* ---------- Logo ---------- */
+.brand {
+  position: absolute;
+  left: calc(32 * var(--u));
+  top: calc(32 * var(--u));
+  width: calc(177 * var(--u));
+  height: calc(50 * var(--u));
+}
+
+.brand__spider {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(38 * var(--u));
+  height: calc(50 * var(--u));
+}
+
+.brand__marvel {
+  position: absolute;
+  left: calc(70 * var(--u));
+  top: calc(10 * var(--u));
+  width: calc(78 * var(--u));
+  height: calc(30 * var(--u));
+}
+
+/* ---------- Navegação ---------- */
+.nav {
+  position: absolute;
+  right: calc(72 * var(--u));
+  top: calc(24 * var(--u));
+  height: calc(64 * var(--u));
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: calc(44 * var(--u));
+}
+
+.nav__link {
+  font-size: calc(18 * var(--u));
+  line-height: calc(27 * var(--u));
+  color: rgba(255, 255, 255, .9);
+  white-space: nowrap;
+  transition: opacity .2s ease;
+}
+
+.nav__link:hover { opacity: .7; }
+
+.nav__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(18 * var(--u)) calc(24 * var(--u));
+  border-radius: calc(50 * var(--u));
+  background-color: rgba(255, 255, 255, .9);
+  font-size: calc(18 * var(--u));
+  line-height: calc(27 * var(--u));
+  color: rgba(0, 0, 0, .9);
+  white-space: nowrap;
+  transition: background-color .2s ease;
+}
+
+.nav__cta:hover { background-color: #fff; }
+
+/* ---------- Lançamento (ancorado na base à esquerda) ---------- */
+.release {
+  position: absolute;
+  left: calc(32 * var(--u));
+  bottom: calc(32 * var(--u));
+}
+
+.release__label {
+  font-size: calc(20 * var(--u));
+  line-height: calc(30 * var(--u));
+  color: rgba(255, 255, 255, .75);
+  white-space: nowrap;
+}
+
+.release__date {
+  margin-top: calc(-4 * var(--u));
+  font-family: "Good Times", "Poppins", sans-serif;
+  font-size: calc(62 * var(--u));
+  line-height: calc(74 * var(--u));
+  color: rgba(255, 255, 255, .9);
+  white-space: nowrap;
+}
+
+
+/* ==========================================================================
+   SEÇÃO 2 — ELENCO
+   ========================================================================== */
+.cast {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #000;
+}
+
+/* ---------- Coluna de texto (centralizada na vertical) ---------- */
+.cast__info {
+  position: absolute;
+  left: calc(73 * var(--u));
+  top: 50%;
+  margin-top: calc(-309 * var(--u));  /* 540 - 231, com a coluna de 617u */
+  width: calc(333 * var(--u));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(154 * var(--u));
+}
+
+.cast__label {
+  font-family: "Good Times", "Poppins", sans-serif;
+  font-size: calc(32 * var(--u));
+  line-height: calc(38 * var(--u));
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .9);
+}
+
+.cast__person {
+  display: flex;
+  flex-direction: column;
+  gap: calc(4 * var(--u));
+  width: 100%;
+}
+
+.cast__name {
+  font-weight: 400;
+  font-size: calc(62 * var(--u));
+  line-height: calc(93 * var(--u));
+  color: rgba(255, 255, 255, .9);
+}
+
+.cast__role {
+  font-size: calc(20 * var(--u));
+  line-height: calc(30 * var(--u));
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .75);
+}
+
+/* ---------- Seletor de personagens ---------- */
+.cast__picker {
+  display: flex;
+  align-items: center;
+  gap: calc(20 * var(--u));
+}
+
+/* O SVG do indicador é 2u mais alto que a caixa: sobra 1u em cima e embaixo */
+.cast__indicator {
+  position: relative;
+  flex-shrink: 0;
+  width: calc(20 * var(--u));
+  height: calc(144 * var(--u));
+}
+
+.cast__indicator img {
+  position: absolute;
+  left: 0;
+  top: calc(-1 * var(--u));
+  width: calc(20 * var(--u));
+  height: calc(146 * var(--u));
+}
+
+.cast__list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(20 * var(--u));
+}
+
+.cast__item {
+  font-size: calc(14 * var(--u));
+  line-height: calc(21 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, .5);
+  transition: color .2s ease;
+}
+
+.cast__item--active { color: rgba(255, 255, 255, .8); }
+
+/* ---------- Imagem ---------- */
+.cast__media {
+  position: absolute;
+  left: calc(526 * var(--u));
+  right: calc(77 * var(--u));
+  top: 15.648%;      /* 169 / 1080 */
+  bottom: 11.852%;   /* (1080 - 952) / 1080 */
+  border-radius: calc(40 * var(--u));
+  overflow: hidden;
+}
+
+.cast__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Borda por dentro, como o stroke "inside" do Figma */
+.cast__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: calc(2 * var(--u)) solid rgba(255, 255, 255, .14);
+  border-radius: inherit;
+  pointer-events: none;
+}

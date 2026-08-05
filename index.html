@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spider-Man: Um Novo Dia</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ======================================================================
+       SEÇÃO 1 — HERO
+       ====================================================================== -->
+  <section class="hero">
+
+    <!-- Teia de fundo (bg.webp) sobre o vermelho, em mix-blend-mode: overlay -->
+    <div class="hero__webbing" aria-hidden="true"></div>
+
+    <!--
+      Shape de bordas arredondadas internas.
+      O path original (1856 x 1016) foi normalizado para valores entre 0 e 1
+      e o clipPath usa clipPathUnits="objectBoundingBox", assim ele acompanha
+      qualquer largura E qualquer altura da div .stage.
+    -->
+    <svg class="clip-defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <defs>
+        <clipPath id="stage-clip" clipPathUnits="objectBoundingBox">
+          <path
+            d="M0.811961 0.037402 C0.811961 0.058058 0.821126 0.074803 0.832435 0.074803 H0.949892 C0.977565 0.074803 1 0.115785 1 0.166339 V0.908465 C1 0.959018 0.977565 1 0.949892 1 H0.181034 C0.161098 1 0.144935 0.970475 0.144935 0.934055 C0.144935 0.897635 0.128773 0.86811 0.108836 0.86811 H0.050108 C0.022434 0.86811 0 0.827128 0 0.776575 V0.155512 C0 0.104959 0.022434 0.063976 0.050108 0.063976 H0.09833 C0.108001 0.063976 0.115841 0.049655 0.115841 0.031988 C0.115841 0.014322 0.12368 0 0.133351 0 H0.791487 C0.802796 0 0.811961 0.016745 0.811961 0.037402 Z" />
+        </clipPath>
+      </defs>
+    </svg>
+
+    <!-- Div clipada pelo shape, com bg-container.webp de plano de fundo -->
+    <div class="stage">
+
+      <div class="movie">
+        <img class="movie__title" src="assets/title spider-man.svg" alt="Spider-Man: Um Novo Dia" width="445"
+          height="153">
+
+        <p class="movie__desc">
+          It's a BRAND NEW DAY for Peter Parker.<br />
+          Fighting crime full-time as Spider-Man in a<br />
+          world that doesn’t remember him
+        </p>
+      </div>
+
+      <div class="scroll-badge" aria-hidden="true">
+        <img class="scroll-badge__ring" src="assets/texto-circular.svg" alt="" width="176" height="176">
+        <img class="scroll-badge__hand" src="assets/mao-homem-aranha.svg" alt="" width="76" height="83">
+      </div>
+
+    </div>
+
+    <!-- Elementos que ficam nos recortes, fora do shape -->
+    <a class="brand" href="#" aria-label="Marvel">
+      <img class="brand__spider" src="assets/logotipo-aranha.svg" alt="" width="38" height="50">
+      <img class="brand__marvel" src="assets/logotipo-marvel.svg" alt="" width="78" height="30">
+    </a>
+
+    <nav class="nav">
+      <a class="nav__link" href="#">TRAILER</a>
+      <a class="nav__cta" href="#">GET TICKETS</a>
+    </nav>
+
+    <div class="release">
+      <p class="release__label">RELEASE</p>
+      <p class="release__date">07/30</p>
+    </div>
+
+  </section>
+
+
+  <!-- ======================================================================
+       SEÇÃO 2 — ELENCO
+       ====================================================================== -->
+  <section class="cast" id="elenco">
+
+    <div class="cast__info">
+      <p class="cast__label">CAST</p>
+
+      <div class="cast__person">
+        <h2 class="cast__name">Zendaya</h2>
+        <p class="cast__role">Michelle &ldquo;MJ&rdquo; Jones</p>
+      </div>
+
+      <div class="cast__picker">
+        <div class="cast__indicator" aria-hidden="true">
+          <img src="assets/indicador-elenco.svg" alt="" width="20" height="146">
+        </div>
+
+        <ul class="cast__list">
+          <li class="cast__item">Michelle &ldquo;MJ&rdquo; Jones</li>
+          <li class="cast__item cast__item--active" aria-current="true">Michelle &ldquo;MJ&rdquo; Jones</li>
+          <li class="cast__item">Michelle &ldquo;MJ&rdquo; Jones</li>
+          <li class="cast__item">Michelle &ldquo;MJ&rdquo; Jones</li>
+        </ul>
+      </div>
+    </div>
+
+    <figure class="cast__media">
+      <img src="assets/elenco-zendaya.png" alt="Zendaya como Michelle &ldquo;MJ&rdquo; Jones">
+    </figure>
+
+  </section>
+
+</body>
+
+</html>
