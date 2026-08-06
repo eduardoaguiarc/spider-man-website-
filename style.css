@@ -164,6 +164,17 @@ body {
 .scroll-badge__ring {
   width: 100%;
   height: 100%;
+  animation: scroll-badge-spin 12s linear infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+@keyframes scroll-badge-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-badge__ring { animation: none; }
 }
 
 .scroll-badge__hand {
