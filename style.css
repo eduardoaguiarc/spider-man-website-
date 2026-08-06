@@ -97,9 +97,20 @@ body {
   clip-path: url(#stage-clip);
 }
 
+/* Sequência de frames desenhada via canvas e recortada junto com a stage. */
+.stage__sequence {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 /* ---------- Título + sinopse (centralizados na vertical) ---------- */
 .movie {
   position: absolute;
+  z-index: 1;
   left: calc(45 * var(--u));
   width: calc(1766 * var(--u));
   top: 50%;
@@ -114,17 +125,33 @@ body {
   height: calc(153 * var(--u));
 }
 
-.movie__desc {
+.movie__copy {
+  position: relative;
   width: calc(449 * var(--u));
   margin-top: calc(16.5 * var(--u));
+  min-height: calc(180 * var(--u));
+}
+
+.movie__desc {
+  position: absolute;
+  inset: 0;
   font-size: calc(20 * var(--u));
   line-height: calc(30 * var(--u));
-  color: rgba(0, 0, 0, .9);
+  color: rgba(255, 255, 255, .9);
+  mix-blend-mode: difference;
+  font-kerning: none;
+  text-rendering: optimizeSpeed;
+}
+
+/* Evita um flash dos textos 2 e 3 antes de o SplitText ser inicializado. */
+.movie__desc:not(:first-child) {
+  visibility: hidden;
 }
 
 /* ---------- Selo "role a página" (ancorado na base à direita) ---------- */
 .scroll-badge {
   position: absolute;
+  z-index: 1;
   right: calc(45 * var(--u));
   bottom: calc(55.64 * var(--u));
   width: calc(176 * var(--u));
