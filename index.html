@@ -13,7 +13,49 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="is-opening">
+
+  <!-- ======================================================================
+       CAPA DE ABERTURA
+       Os frames de assets/frames-opening servem de direção para estes estados.
+       A teia permanece vetorial para poder ser desenhada pelo DrawSVG.
+       ====================================================================== -->
+  <div class="opening" role="status" aria-label="Carregando o site" aria-live="polite">
+    <div class="opening__sheet">
+      <img class="opening__logo" src="assets/title spider-man.svg" alt="Spider-Man: Brand New Day"
+        width="439" height="133">
+
+      <svg class="opening__web" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden="true">
+        <g class="opening__threads">
+          <!-- Fios disparados pela mão. O primeiro ponto fica junto ao pulso. -->
+          <path class="opening__web-path opening__web-path--shot" d="M1844 460 L194 864" />
+          <path class="opening__web-path opening__web-path--shot" d="M1848 474 L194 875" />
+
+          <!-- Raios que fazem a teia crescer a partir do ponto de ancoragem. -->
+          <path class="opening__web-path opening__web-path--radial" d="M194 870 L0 600" />
+          <path class="opening__web-path opening__web-path--radial" d="M194 870 L42 540" />
+          <path class="opening__web-path opening__web-path--radial" d="M194 870 L256 534" />
+          <path class="opening__web-path opening__web-path--radial" d="M194 870 L462 660" />
+          <path class="opening__web-path opening__web-path--radial" d="M194 870 L470 900" />
+          <path class="opening__web-path opening__web-path--radial" d="M194 870 L466 1080" />
+          <path class="opening__web-path opening__web-path--radial" d="M194 870 L230 1080" />
+          <path class="opening__web-path opening__web-path--radial" d="M194 870 L0 1042" />
+          <path class="opening__web-path opening__web-path--radial" d="M194 870 L0 850" />
+
+          <!-- Anéis orgânicos, inspirados nos frames 15 e 16. -->
+          <path class="opening__web-path opening__web-path--ring" d="M205 810 Q218 836 243 826 Q229 851 256 874 Q226 870 247 916 Q216 900 201 923 Q187 900 158 913 Q172 886 147 868 Q172 859 159 830 Q187 841 205 810" />
+          <path class="opening__web-path opening__web-path--ring" d="M213 758 Q238 802 287 782 Q259 826 319 880 Q260 870 298 960 Q239 918 207 975 Q184 922 98 955 Q137 897 49 858 Q132 846 97 735 Q176 798 213 758" />
+          <path class="opening__web-path opening__web-path--ring" d="M225 696 Q260 769 348 742 Q300 814 387 889 Q301 870 358 1018 Q272 944 216 1050 Q178 952 31 1005 Q102 902 -18 852 Q98 827 28 660 Q165 766 225 696" />
+          <path class="opening__web-path opening__web-path--ring" d="M246 560 Q292 722 449 665 Q362 798 470 900 Q358 870 454 1082 M235 1082 Q169 969 -20 1057 M-18 850 Q80 808 -6 588 Q154 730 246 560" />
+        </g>
+      </svg>
+
+      <img class="opening__hand" src="assets/mao-homem-aranha.svg" alt="" width="76" height="83"
+        aria-hidden="true">
+
+      <p class="opening__progress" aria-hidden="true"><span>0</span>%</p>
+    </div>
+  </div>
 
   <div id="smooth-wrapper">
     <div id="smooth-content">
@@ -214,6 +256,7 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
   <script src="script.js"></script>
 
 </body>

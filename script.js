@@ -1,7 +1,20 @@
 const FRAME_COUNT = 74;
 const FRAME_PATH = (index) => `assets/frames/img-${String(index + 1).padStart(2, "0")}.webp`;
 
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText, DrawSVGPlugin);
+
+const opening = document.querySelector(".opening");
+const openingSheet = document.querySelector(".opening__sheet");
+const openingProgress = document.querySelector(".opening__progress span");
+const openingHand = document.querySelector(".opening__hand");
+const openingShotThreads = gsap.utils.toArray(".opening__web-path--shot");
+const openingWebThreads = gsap.utils.toArray(
+  ".opening__web-path--radial, .opening__web-path--ring"
+);
+const loadingValue = { value: 0 };
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+document.body.classList.add("is-opening");
 
 const smoother = ScrollSmoother.create({
   wrapper: "#smooth-wrapper",
@@ -10,6 +23,92 @@ const smoother = ScrollSmoother.create({
   smoothTouch: 0.1,
   effects: true
 });
+
+smoother.paused(true);
+
+function renderOpeningProgress() {
+  openingProgress.textContent = Math.round(loadingValue.value);
+}
+
+function finishOpening() {
+  opening.setAttribute("aria-hidden", "true");
+  opening.style.display = "none";
+  document.body.classList.remove("is-opening");
+  smoother.paused(false);
+  ScrollTrigger.refresh();
+}
+
+function playOpening() {
+  const firstDuration = reduceMotion ? 0.15 : 2.65;
+  const webDuration = reduceMotion ? 0.12 : 1.55;
+  const exitDuration = reduceMotion ? 0.18 : 0.95;
+
+  gsap.set(openingHand, { autoAlpha: 0, xPercent: 62, rotation: 98 });
+  gsap.set([...openingShotThreads, ...openingWebThreads], { drawSVG: "0%" });
+
+  const openingTimeline = gsap.timeline({
+    defaults: { ease: "power2.out" },
+    onComplete: finishOpening
+  });
+
+  openingTimeline
+    .to(loadingValue, {
+      value: 90,
+      duration: firstDuration,
+      ease: "power1.inOut",
+      onUpdate: renderOpeningProgress
+    })
+    .to(openingHand, {
+      autoAlpha: 1,
+      xPercent: 0,
+      rotation: 86,
+      duration: reduceMotion ? 0.08 : 0.38,
+      ease: "back.out(1.4)"
+    })
+    .to(openingShotThreads, {
+      drawSVG: "100%",
+      duration: webDuration,
+      stagger: 0.04,
+      ease: "power2.inOut"
+    }, "web")
+    .to(openingWebThreads, {
+      drawSVG: "100%",
+      duration: webDuration * 0.82,
+      stagger: { amount: webDuration * 0.28, from: "start" },
+      ease: "power2.out"
+    }, "web+=0.18")
+    .to(loadingValue, {
+      value: 100,
+      duration: webDuration,
+      ease: "power1.inOut",
+      onUpdate: renderOpeningProgress
+    }, "web")
+    .to(openingHand, {
+      xPercent: -3,
+      yPercent: 2,
+      rotation: 83,
+      duration: reduceMotion ? 0.05 : 0.16,
+      ease: "power3.out"
+    })
+    .to(openingSheet, {
+      xPercent: 8,
+      yPercent: -2,
+      rotation: -2.6,
+      duration: exitDuration * 0.35,
+      ease: "power2.in"
+    })
+    .to(openingSheet, {
+      xPercent: 116,
+      yPercent: -15,
+      rotation: -7,
+      duration: exitDuration,
+      ease: "power4.inOut"
+    })
+    .to(opening, {
+      autoAlpha: 0,
+      duration: reduceMotion ? 0.05 : 0.18
+    }, "-=0.2");
+}
 
 const canvas = document.querySelector(".stage__sequence");
 const stage = document.querySelector(".stage");
@@ -340,3 +439,4 @@ window.addEventListener("load", () => {
 });
 
 resizeCanvas();
+playOpening();
