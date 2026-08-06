@@ -137,10 +137,13 @@ body {
   inset: 0;
   font-size: calc(20 * var(--u));
   line-height: calc(30 * var(--u));
-  color: rgba(255, 255, 255, .9);
-  mix-blend-mode: difference;
+  color: rgba(0, 0, 0, .9);
   font-kerning: none;
   text-rendering: optimizeSpeed;
+}
+
+.movie__desc:nth-child(3) {
+  color: rgba(255, 255, 255, .9);
 }
 
 /* Evita um flash dos textos 2 e 3 antes de o SplitText ser inicializado. */
@@ -169,6 +172,194 @@ body {
   top: calc(45.64 * var(--u));
   width: calc(76 * var(--u));
   height: calc(83 * var(--u));
+}
+
+/* --------------------------------------------------------------------------
+   TRAILER — o contêiner cresce pelo centro e revela um vídeo já em fullscreen.
+   -------------------------------------------------------------------------- */
+.trailer-reveal {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+  background-color: #000;
+}
+
+.trailer-video {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
+.trailer-reveal__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, .22);
+  pointer-events: none;
+}
+
+.trailer-player {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.trailer-player button,
+.trailer-player input {
+  font: inherit;
+}
+
+.trailer-player button {
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+}
+
+.trailer-player__main-toggle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: clamp(72px, calc(112 * var(--u)), 112px);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .55) !important;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, .3);
+  backdrop-filter: blur(8px);
+  transition: background-color .25s ease, transform .25s ease;
+}
+
+.trailer-player__main-toggle:hover {
+  transform: translate(-50%, -50%) scale(1.06);
+  background: rgba(0, 0, 0, .48);
+}
+
+.trailer-player__play-icon {
+  width: 0;
+  height: 0;
+  margin-left: 8%;
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+  border-left: 17px solid currentColor;
+}
+
+.trailer-player__pause-icon {
+  display: none;
+  width: 15px;
+  height: 22px;
+  border-right: 5px solid currentColor;
+  border-left: 5px solid currentColor;
+}
+
+.trailer-player.is-playing .trailer-player__play-icon {
+  display: none;
+}
+
+.trailer-player.is-playing .trailer-player__pause-icon {
+  display: block;
+}
+
+.trailer-player.is-playing .trailer-player__main-toggle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.trailer-player__controls {
+  position: absolute;
+  left: clamp(24px, calc(48 * var(--u)), 48px);
+  right: clamp(24px, calc(48 * var(--u)), 48px);
+  bottom: clamp(22px, calc(40 * var(--u)), 40px);
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, calc(18 * var(--u)), 18px);
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .42);
+  backdrop-filter: blur(10px);
+}
+
+.trailer-player__toggle,
+.trailer-player__mute,
+.trailer-player__fullscreen {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+}
+
+.trailer-player__toggle {
+  width: 32px;
+}
+
+.trailer-player__toggle .trailer-player__play-icon {
+  border-top-width: 7px;
+  border-bottom-width: 7px;
+  border-left-width: 11px;
+}
+
+.trailer-player__toggle .trailer-player__pause-icon {
+  width: 12px;
+  height: 16px;
+  border-right-width: 4px;
+  border-left-width: 4px;
+}
+
+.trailer-player__time,
+.trailer-player__mute {
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: .04em;
+  color: rgba(255, 255, 255, .86);
+  white-space: nowrap;
+}
+
+.trailer-player__progress {
+  flex: 1 1 auto;
+  height: 3px;
+  margin: 0;
+  accent-color: #fff;
+  cursor: pointer;
+}
+
+.trailer-player__mute {
+  min-width: 44px;
+}
+
+.trailer-player__fullscreen {
+  width: 32px;
+}
+
+.trailer-player__fullscreen span {
+  width: 17px;
+  height: 17px;
+  border: 2px solid currentColor;
+}
+
+@media (max-width: 700px) {
+  .trailer-player__time,
+  .trailer-player__mute {
+    display: none;
+  }
 }
 
 /* --------------------------------------------------------------------------

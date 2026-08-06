@@ -76,6 +76,41 @@
 
     </div>
 
+    <div class="trailer-reveal">
+      <video class="trailer-video" autoplay muted loop playsinline preload="auto">
+        <source src="assets/SPIDER-MAN BRAND NEW DAY – New Trailer (4K)_1440p.mp4" type="video/mp4">
+      </video>
+
+      <div class="trailer-reveal__overlay" aria-hidden="true"></div>
+
+      <div class="trailer-player">
+        <button class="trailer-player__main-toggle" type="button" aria-label="Reproduzir trailer">
+          <span class="trailer-player__play-icon" aria-hidden="true"></span>
+          <span class="trailer-player__pause-icon" aria-hidden="true"></span>
+        </button>
+
+        <div class="trailer-player__controls">
+          <button class="trailer-player__toggle" type="button" aria-label="Reproduzir trailer">
+            <span class="trailer-player__play-icon" aria-hidden="true"></span>
+            <span class="trailer-player__pause-icon" aria-hidden="true"></span>
+          </button>
+
+          <span class="trailer-player__time trailer-player__current">0:00</span>
+          <input class="trailer-player__progress" type="range" min="0" max="1000" value="0"
+            aria-label="Progresso do trailer">
+          <span class="trailer-player__time trailer-player__duration">0:00</span>
+
+          <button class="trailer-player__mute" type="button" aria-label="Ativar som">
+            <span aria-hidden="true">MUDO</span>
+          </button>
+
+          <button class="trailer-player__fullscreen" type="button" aria-label="Tela cheia">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Elementos que ficam nos recortes, fora do shape -->
     <a class="brand" href="#" aria-label="Marvel">
       <img class="brand__spider" src="assets/logotipo-aranha.svg" alt="" width="38" height="50">

@@ -14,9 +14,102 @@ const smoother = ScrollSmoother.create({
 const canvas = document.querySelector(".stage__sequence");
 const stage = document.querySelector(".stage");
 const context = canvas.getContext("2d");
+const trailerReveal = document.querySelector(".trailer-reveal");
+const trailerVideo = document.querySelector(".trailer-video");
+const trailerPlayer = document.querySelector(".trailer-player");
+const mainToggle = document.querySelector(".trailer-player__main-toggle");
+const controlsToggle = document.querySelector(".trailer-player__toggle");
+const progressControl = document.querySelector(".trailer-player__progress");
+const currentTimeLabel = document.querySelector(".trailer-player__current");
+const durationLabel = document.querySelector(".trailer-player__duration");
+const muteToggle = document.querySelector(".trailer-player__mute");
+const fullscreenToggle = document.querySelector(".trailer-player__fullscreen");
 const frames = [];
 const playhead = { frame: 0 };
 let lastDrawnFrame = -1;
+let trailerStarted = false;
+
+function formatTime(seconds) {
+  if (!Number.isFinite(seconds)) return "0:00";
+
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, "0");
+  return `${minutes}:${remainingSeconds}`;
+}
+
+function updatePlayerState() {
+  const isPlaying = trailerStarted && !trailerVideo.paused;
+  trailerPlayer.classList.toggle("is-playing", isPlaying);
+  mainToggle.setAttribute("aria-label", isPlaying ? "Pausar trailer" : "Reproduzir trailer");
+  controlsToggle.setAttribute("aria-label", isPlaying ? "Pausar trailer" : "Reproduzir trailer");
+}
+
+function updateMuteState() {
+  muteToggle.querySelector("span").textContent = trailerVideo.muted ? "MUDO" : "SOM";
+  muteToggle.setAttribute("aria-label", trailerVideo.muted ? "Ativar som" : "Desativar som");
+}
+
+function updateDuration() {
+  durationLabel.textContent = formatTime(trailerVideo.duration);
+}
+
+async function toggleTrailer() {
+  if (!trailerStarted) {
+    trailerStarted = true;
+    trailerVideo.loop = false;
+    trailerVideo.currentTime = 0;
+    trailerVideo.muted = false;
+    await trailerVideo.play();
+    updatePlayerState();
+    return;
+  }
+
+  if (!trailerVideo.paused) {
+    trailerVideo.pause();
+  } else {
+    await trailerVideo.play();
+  }
+
+  updatePlayerState();
+}
+
+mainToggle.addEventListener("click", toggleTrailer);
+controlsToggle.addEventListener("click", toggleTrailer);
+
+trailerVideo.addEventListener("loadedmetadata", updateDuration);
+trailerVideo.addEventListener("durationchange", updateDuration);
+trailerVideo.addEventListener("volumechange", updateMuteState);
+
+trailerVideo.addEventListener("timeupdate", () => {
+  currentTimeLabel.textContent = formatTime(trailerVideo.currentTime);
+  progressControl.value = trailerVideo.duration
+    ? Math.round((trailerVideo.currentTime / trailerVideo.duration) * 1000)
+    : 0;
+});
+
+trailerVideo.addEventListener("play", updatePlayerState);
+trailerVideo.addEventListener("pause", updatePlayerState);
+trailerVideo.addEventListener("ended", updatePlayerState);
+
+progressControl.addEventListener("input", () => {
+  if (trailerVideo.duration) {
+    trailerVideo.currentTime = (Number(progressControl.value) / 1000) * trailerVideo.duration;
+  }
+});
+
+muteToggle.addEventListener("click", () => {
+  trailerVideo.muted = !trailerVideo.muted;
+});
+
+fullscreenToggle.addEventListener("click", () => {
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else {
+    trailerReveal.requestFullscreen();
+  }
+});
+
+updateMuteState();
 
 function resizeCanvas() {
   const { width, height } = stage.getBoundingClientRect();
@@ -84,6 +177,7 @@ const splitDescriptions = descriptions.map((description) =>
 );
 
 gsap.set(descriptions, { visibility: "visible" });
+gsap.set(splitDescriptions[0].chars, { autoAlpha: 1 });
 gsap.set(splitDescriptions[1].chars, { autoAlpha: 0 });
 gsap.set(splitDescriptions[2].chars, { autoAlpha: 0 });
 
@@ -97,7 +191,7 @@ const heroTimeline = gsap.timeline({
   scrollTrigger: {
     trigger: ".hero",
     start: "top top",
-    end: "+=300%",
+    end: "+=510%",
     scrub: 0.6,
     pin: true,
     anticipatePin: 1,
@@ -131,7 +225,26 @@ heroTimeline
     autoAlpha: 1,
     duration: 1.25,
     stagger: randomFade
-  }, 7.5);
+  }, 7.5)
+  .to(trailerReveal, {
+    width: "100vw",
+    height: "100vh",
+    duration: 5
+  }, 10)
+  .to(".movie__title", {
+    xPercent: -120,
+    duration: 2.75
+  }, 12.25)
+  .to(".movie__copy", {
+    xPercent: 120,
+    duration: 2.75
+  }, 12.25)
+  .to(trailerPlayer, {
+    autoAlpha: 1,
+    pointerEvents: "auto",
+    duration: 0.1
+  }, 14.9)
+  .to({}, { duration: 2 }, 15);
 
 window.addEventListener("resize", resizeCanvas);
 window.addEventListener("load", () => {
