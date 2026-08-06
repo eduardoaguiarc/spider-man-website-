@@ -531,7 +531,7 @@ body.is-opening {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: calc(44 * var(--u));
+  gap: calc(34 * var(--u));
 }
 
 .nav__link {
@@ -548,7 +548,8 @@ body.is-opening {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: calc(18 * var(--u)) calc(24 * var(--u));
+  gap: calc(8 * var(--u));
+  padding: calc(18 * var(--u)) calc(12 * var(--u));
   border-radius: calc(50 * var(--u));
   background-color: rgba(255, 255, 255, .9);
   font-size: calc(18 * var(--u));
@@ -559,6 +560,13 @@ body.is-opening {
 }
 
 .nav__cta:hover { background-color: #fff; }
+
+.nav__cta-arrow {
+  flex: 0 0 auto;
+  width: calc(26 * var(--u));
+  height: auto;
+  aspect-ratio: 1;
+}
 
 /* ---------- Lançamento (ancorado na base à esquerda) ---------- */
 .release {
