@@ -246,6 +246,93 @@ heroTimeline
   }, 14.9)
   .to({}, { duration: 2 }, 15);
 
+const castPortraits = gsap.utils.toArray(".cast__portrait");
+const castPeople = gsap.utils.toArray(".cast__person-content");
+const castItems = gsap.utils.toArray(".cast__item");
+const castDots = gsap.utils.toArray(".cast__dot");
+const castProgress = document.querySelector(".cast__progress");
+const castSpider = document.querySelector(".cast__spider");
+const CAST_TRANSITIONS = castPortraits.length - 1;
+let currentCastIndex = -1;
+
+function updateActiveCast(index) {
+  if (index === currentCastIndex) return;
+
+  currentCastIndex = index;
+
+  castPeople.forEach((person, personIndex) => {
+    const isActive = personIndex === index;
+    person.classList.toggle("cast__person-content--active", isActive);
+    person.setAttribute("aria-hidden", isActive ? "false" : "true");
+  });
+
+  castItems.forEach((item, itemIndex) => {
+    const isActive = itemIndex === index;
+    item.classList.toggle("cast__item--active", isActive);
+
+    if (isActive) {
+      item.setAttribute("aria-current", "true");
+    } else {
+      item.removeAttribute("aria-current");
+    }
+  });
+
+  castDots.forEach((dot, dotIndex) => {
+    dot.classList.toggle("cast__dot--active", dotIndex <= index);
+  });
+}
+
+gsap.set(castPortraits.slice(1), { height: 0 });
+gsap.set(castPeople.slice(1), { autoAlpha: 0, yPercent: 45 });
+updateActiveCast(0);
+
+const castTimeline = gsap.timeline({
+  defaults: { ease: "none" },
+  scrollTrigger: {
+    trigger: ".cast",
+    start: "top top",
+    end: `+=${CAST_TRANSITIONS * 100}%`,
+    scrub: 0.55,
+    pin: true,
+    anticipatePin: 1,
+    invalidateOnRefresh: true
+  },
+  onUpdate() {
+    const index = Math.min(
+      castPortraits.length - 1,
+      Math.round(this.progress() * CAST_TRANSITIONS)
+    );
+    updateActiveCast(index);
+  }
+});
+
+castTimeline
+  .to(castProgress, { scaleY: 1, duration: CAST_TRANSITIONS }, 0)
+  .to(castSpider, {
+    y: () => Math.max(0, document.querySelector(".cast__indicator").clientHeight - castSpider.clientHeight),
+    duration: CAST_TRANSITIONS
+  }, 0);
+
+for (let index = 1; index < castPortraits.length; index += 1) {
+  const transitionStart = index - 1;
+
+  castTimeline
+    .to(castPortraits[index], {
+      height: "100%",
+      duration: 0.72
+    }, transitionStart + 0.14)
+    .to(castPeople[index - 1], {
+      autoAlpha: 0,
+      yPercent: -45,
+      duration: 0.34
+    }, transitionStart + 0.3)
+    .to(castPeople[index], {
+      autoAlpha: 1,
+      yPercent: 0,
+      duration: 0.34
+    }, transitionStart + 0.36);
+}
+
 window.addEventListener("resize", resizeCanvas);
 window.addEventListener("load", () => {
   resizeCanvas();
